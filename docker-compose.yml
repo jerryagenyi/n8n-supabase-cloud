@@ -33,7 +33,8 @@ services:
       - N8N_BASIC_AUTH_USER=${N8N_BASIC_AUTH_USER}
       - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
       - N8N_PORT=5678
-      - N8N_HOST=${N8N_HOST}      - WEBHOOK_URL=${WEBHOOK_URL}
+      - N8N_HOST=${N8N_HOST}
+      - WEBHOOK_URL=${WEBHOOK_URL} # Corrected: Now on its own line
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=n8n-db
       - DB_POSTGRESDB_PORT=5432
@@ -58,7 +59,8 @@ services:
   nginx:
     <<: *podman-defaults
     container_name: nginx
-    image: docker.io/nginx:alpine    ports:
+    image: docker.io/nginx:alpine
+    ports: # Corrected: Now on its own line, correctly indented
       - "80:80"
     volumes:
       - ./nginx/conf.d:/etc/nginx/conf.d:Z
