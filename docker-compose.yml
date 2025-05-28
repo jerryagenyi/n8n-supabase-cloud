@@ -1,9 +1,13 @@
 version: "3.8"
 
+x-podman-defaults: &podman-defaults
+  restart: "no"
+
 services:
   supabase-db:
+    <<: *podman-defaults
+    container_name: supabase-db
     image: docker.io/supabase/postgres:latest
-    restart: unless-stopped
     ports:
       - "5432:5432"
     environment:
@@ -14,6 +18,8 @@ services:
       - supabase-data:/var/lib/postgresql/data:Z
 
   n8n:
+    <<: *podman-defaults
+    container_name: n8n
     image: docker.io/n8nio/n8n:latest
     restart: unless-stopped
     ports:
