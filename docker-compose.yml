@@ -56,19 +56,6 @@ services:
     volumes:
       - n8n-data:/home/node/.n8n:Z
 
-# Nginx service commented out due to rootless podman port binding restrictions
-#  nginx:
-#    <<: *podman-defaults
-#    container_name: nginx
-#    image: docker.io/nginx:alpine
-#    ports:
-#      - "80:80"
-#    volumes:
-#      - ./nginx/conf.d:/etc/nginx/conf.d:Z
-#      - ./nginx/www:/var/www/html:Z
-#    depends_on:
-#      - n8n
-
 volumes:
   n8n-db-data:
   n8n-data:
