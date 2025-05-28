@@ -4,23 +4,18 @@ x-podman-defaults: &podman-defaults
   restart: "no"
 
 services:
-  supabase-db:
+  n8n-db:
     <<: *podman-defaults
-    container_name: supabase-db
-    image: docker.io/supabase/postgres:15.8.1.060
+    container_name: n8n-db
+    image: docker.io/library/postgres:15-alpine
     ports:
       - "5432:5432"
     environment:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
-      POSTGRES_HOST: /var/run/postgresql
-      PGPORT: 5432
-      JWT_SECRET: ${JWT_SECRET:-your-super-secret-jwt-token-with-at-least-32-characters-long}
-      JWT_EXP: ${JWT_EXPIRY:-3600}
     volumes:
-      - supabase-data:/var/lib/postgresql/data:Z
-    command: ["postgres", "-c", "config_file=/etc/postgresql/postgresql.conf"]
+      - n8n-db-data:/var/lib/postgresql/data:Z
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-h", "localhost"]
       interval: 5s
@@ -41,17 +36,17 @@ services:
       - N8N_HOST=${N8N_HOST}
       - WEBHOOK_URL=${WEBHOOK_URL}
       - DB_TYPE=postgresdb
-      - DB_POSTGRESDB_HOST=supabase-db
+      - DB_POSTGRESDB_HOST=n8n-db
       - DB_POSTGRESDB_PORT=5432
       - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
       - DB_POSTGRESDB_USER=${POSTGRES_USER}
       - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
     depends_on:
-      supabase-db:
+      n8n-db:
         condition: service_healthy
     volumes:
       - n8n-data:/home/node/.n8n:Z
 
 volumes:
-  supabase-data:
+  n8n-db-data:
   n8n-data:
