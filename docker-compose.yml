@@ -34,7 +34,7 @@ services:
       - N8N_BASIC_AUTH_PASSWORD=${N8N_BASIC_AUTH_PASSWORD}
       - N8N_PORT=5678
       - N8N_HOST=${N8N_HOST}
-      - WEBHOOK_URL=${WEBHOOK_URL} # Corrected: Now on its own line
+      - WEBHOOK_URL=${WEBHOOK_URL}
       - DB_TYPE=postgresdb
       - DB_POSTGRESDB_HOST=n8n-db
       - DB_POSTGRESDB_PORT=5432
@@ -56,18 +56,18 @@ services:
     volumes:
       - n8n-data:/home/node/.n8n:Z
 
-  nginx:
-    <<: *podman-defaults
-    container_name: nginx
-    image: docker.io/nginx:alpine
-    ports: # Corrected: Now on its own line, correctly indented
-      - "80:80"
-    volumes:
-      - ./nginx/conf.d:/etc/nginx/conf.d:Z
-      - ./nginx/ssl:/etc/nginx/ssl:Z
-      - ./nginx/www:/var/www/html:Z
-    depends_on:
-      - n8n
+# Nginx service commented out due to rootless podman port binding restrictions
+#  nginx:
+#    <<: *podman-defaults
+#    container_name: nginx
+#    image: docker.io/nginx:alpine
+#    ports:
+#      - "80:80"
+#    volumes:
+#      - ./nginx/conf.d:/etc/nginx/conf.d:Z
+#      - ./nginx/www:/var/www/html:Z
+#    depends_on:
+#      - n8n
 
 volumes:
   n8n-db-data:
