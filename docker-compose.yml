@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   supabase-db:
-    image: supabase/postgres
+    image: docker.io/supabase/postgres:latest
     restart: unless-stopped
     ports:
       - "5432:5432"
@@ -11,10 +11,10 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
-      - supabase-data:/var/lib/postgresql/data
+      - supabase-data:/var/lib/postgresql/data:Z
 
   n8n:
-    image: n8nio/n8n
+    image: docker.io/n8nio/n8n:latest
     restart: unless-stopped
     ports:
       - "5678:5678"
@@ -34,7 +34,7 @@ services:
     depends_on:
       - supabase-db
     volumes:
-      - n8n-data:/home/node/.n8n
+      - n8n-data:/home/node/.n8n:Z
 
 volumes:
   supabase-data:
