@@ -23,9 +23,14 @@ fi
 # Optimize swap settings
 echo "Optimizing swap settings..."
 # Set swappiness to a lower value (default is 60)
-echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+if ! grep -q '^vm.swappiness' /etc/sysctl.conf; then
+    echo "vm.swappiness=10" | sudo tee -a /etc/sysctl.conf
+fi
 # Increase cache pressure to improve memory management
-echo "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
+if ! grep -q '^vm.vfs_cache_pressure' /etc/sysctl.conf; then
+    echo "vm.vfs_cache_pressure=50" | sudo tee -a /etc/sysctl.conf
+fi
+# Apply settings
 sudo sysctl -p
 
 # Show results
@@ -35,4 +40,5 @@ echo -e "\nSwap configuration:"
 swapon --show
 echo -e "\nSwap settings:"
 cat /proc/sys/vm/swappiness
+cat /proc/sys/vm/vfs_cache_pressure
 echo "Done! The system will use this swap space even after reboot."
