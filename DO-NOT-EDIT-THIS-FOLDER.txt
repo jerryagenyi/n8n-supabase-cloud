@@ -1,0 +1,4 @@
+Important Notes:
+This folder should primarily be managed by rclone for automated syncing.
+Avoid manual modifications inside this folder unless absolutely necessary for restoration.
+For detailed recovery instructions, refer to the portability-btw-servers.md and how-to-use-make.md files within the n8n-supabase-cloud project repository.
