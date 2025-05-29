@@ -27,6 +27,18 @@ Open terminal in your project folder and run any of the following:
 | `make restore` | Restores volumes from backup |
 | `make clean-volumes` | Deletes both named volumes |
 
+## Cloudflare Tunnel Commands
+
+| Command                     | Description                                            |
+|-----------------------------|--------------------------------------------------------|
+| `make install-cloudflared`  | Installs the Cloudflare Tunnel system service          |
+| `make start-cloudflared`    | Starts the Cloudflare Tunnel service                   |
+| `make enable-cloudflared`   | Enables the Cloudflare Tunnel service to start on boot |
+| `make full-cloudflared-setup` | Runs install, start, and enable for the tunnel service |
+| `make tunnel-status`        | Checks the current status of the tunnel service        |
+| `make tunnel-logs`          | Views real-time logs of the tunnel service             |
+| `make uninstall-cloudflared`| Uninstalls the Cloudflare Tunnel service               |
+
 💡 **Pro Tip:** Use `make logs` to monitor your services in real-time.
 
 ## 📦 What This Enables
