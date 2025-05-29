@@ -16,11 +16,28 @@ services:
       POSTGRES_DB: ${POSTGRES_DB}
     volumes:
       - n8n-db-data:/var/lib/postgresql/data:Z
+    # Optimize PostgreSQL for low memory
+    command: >
+      postgres 
+      -c shared_buffers=32MB 
+      -c effective_cache_size=128MB
+      -c maintenance_work_mem=16MB
+      -c checkpoint_completion_target=0.7
+      -c wal_buffers=1MB
+      -c default_statistics_target=100
+      -c random_page_cost=1.1
+      -c effective_io_concurrency=200
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-h", "localhost"]
-      interval: 5s
+      interval: 10s
       timeout: 5s
-      retries: 10
+      retries: 5
+    deploy:
+      resources:
+        limits:
+          memory: 80M
+        reservations:
+          memory: 60M
 
   n8n:
     <<: *podman-defaults
@@ -41,6 +58,8 @@ services:
       - DB_POSTGRESDB_DATABASE=${POSTGRES_DB}
       - DB_POSTGRESDB_USER=${POSTGRES_USER}
       - DB_POSTGRESDB_PASSWORD=${POSTGRES_PASSWORD}
+      # Memory optimization
+      - NODE_OPTIONS=--max_old_space_size=280
       # Supabase Configuration
       - SUPABASE_URL=${SUPABASE_URL}
       - SUPABASE_API_KEY=${SUPABASE_API_KEY}
@@ -55,6 +74,12 @@ services:
         condition: service_healthy
     volumes:
       - n8n-data:/home/node/.n8n:Z
+    deploy:
+      resources:
+        limits:
+          memory: 320M
+        reservations:
+          memory: 250M
 
 volumes:
   n8n-db-data:
